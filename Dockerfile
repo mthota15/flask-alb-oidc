@@ -6,7 +6,8 @@ EXPOSE 8080
 COPY requirements.txt ./
 
 RUN apk update \
-    && apk add --no-cache --virtual .build-deps make gcc libc-dev  libffi-dev openssl-dev\
+    && apk --no-cache --update add libffi libssl1.0 \
+    && apk add --no-cache --virtual .build-deps make gcc libc-dev  libffi-dev openssl-dev \
     && pip install --no-cache-dir -r requirements.txt \
     && apk del .build-deps
 
