@@ -6,7 +6,7 @@ import os
 import base64
 import json
 
-application = Flask(__name__)
+app = Flask(__name__)
 
 def auth_required(f):
     '''
@@ -30,11 +30,11 @@ def auth_required(f):
             abort(401)
     return func
 
-@application.route("/")
+@app.route("/")
 @auth_required
 def index():
     return jsonify(g.user)
 
-@application.route("/health")
+@app.route("/health")
 def health():
     return 'ok'

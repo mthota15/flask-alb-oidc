@@ -1,13 +1,12 @@
-FROM mthota15/unit-python:3.6-alpine
-
-RUN apk add --no-cache curl
+FROM python:3.7-alpine3.8
 
 WORKDIR /usr/src/app
+EXPOSE 8080
+
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 STOPSIGNAL SIGTERM
 
-RUN unitd && curl -XPUT -d @unit.json --unix-socket /var/run/control.unit.sock http://localhost/config
-CMD ["unitd", "--no-daemon", "--control", "unix:/var/run/control.unit.sock"]
+CMD ["gunicorn", "--workers=2", "--bind=0.0.0.0:8080", "app:app"]
